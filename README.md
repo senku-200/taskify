@@ -17,7 +17,6 @@ Taskify is a Django web application for managing tasks efficiently. It allows us
 
 ## Installation
 
-Install my-project with npm
 1. **Clone the repository**:
 ```bash
   git clone https://github.com/yourusername/taskify.git
