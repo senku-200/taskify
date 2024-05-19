@@ -1,12 +1,12 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import Tasks,User
+from .forms import UserRegistrationForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-# Create your views here.
-
-# In views.py
-from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import login
+from django.contrib.auth import logout as auth_logout
 
 def register_user(request):
     form = forms.UserRegistrationForm()
@@ -22,10 +22,6 @@ def register_user(request):
 
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth import login,logout 
 def user_login(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
@@ -44,8 +40,7 @@ def user_login(request):
                 print('password is wrong')
     context = {'login':True}
     return render(request,'signup.html',context=context)
-from django.shortcuts import redirect
-from django.contrib.auth import logout as auth_logout
+
 
 @login_required(login_url='login')
 def logout(request):
@@ -102,7 +97,6 @@ def newTask(request):
     return render(request,'newtask.html',context={'form':form})
 
 def updateTask(request,task_id):
-    print(request)
     task = get_object_or_404(Tasks,id=task_id)
     task.completeStatus = True
     task.save()

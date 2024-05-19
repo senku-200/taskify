@@ -223,14 +223,10 @@
                 'item_id':taskId
             },
             success:(response)=>{
-            // Load content into the body
             body.html(response);
             
-            // Use $(document).ready() to ensure that the content is fully loaded
             $(document).ready(function() {
-                // Capture scroll position after content is loaded
                 var scrollPosition = $(window).scrollTop();
-                // Set scroll position after content is loaded
                 $(window).scrollTop(scrollPosition);
                 body.show();
             });
@@ -273,9 +269,8 @@
         }
 
     var updateTaskStatus = (taskId) => {
-            console.log(taskId)
             $.ajax({
-                url: '/dashboard/',
+                url: '/update/' + taskId + '/',
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': getCookie('csrftoken')
