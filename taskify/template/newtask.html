@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>taskify</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../static/styles/dashboard.css?{% now 'U' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <main>
+        <section id="leftsidebar">
+            <a href="{% url 'dashboard' %}" style="text-decoration: none;">
+                <div id="title">
+                    <span>:</span>
+                    <p>taskify</p>
+                </div>
+            </a>
+            <div id="featurescontainer">
+                <a href="{% url 'dashboard' %}">
+                    <div class="feature">
+                        <i class="fa-solid fa-gauge"></i>
+                        <p>dashboard</p>
+                    </div>
+                </a>
+                <a href="">
+                    <div class="feature">
+                        <i class="fa-solid fa-bell"></i>
+                        <p>notification </p>
+                    </div>
+                </a>
+                <a href="">
+                    <div class="feature">
+                        <i class="fa-solid fa-bullseye"></i>
+                        <p>goals</p>
+                    </div>
+                </a>
+                <a href="">
+                    <div class="feature">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <p>analytics</p>
+                    </div>
+                </a>
+            </div>
+            <div id="settings">
+                <button type="button" id="settings-btn">go to settings</button>
+            </div>
+            <div id="ls-user-profile">
+                <div class="user-profile-pic">
+                    <img src="../{{user.profilePhoto}}" alt="profile_img" id="profile-img">
+                </div>
+                <div id="user-profile">
+                    <p id="user-name">{{user.username}}</p>
+                    <p id="user-profession">{{user.profession}}</p>
+                </div>
+            </div>
+        </section>
+        <section id="form-dashboard">
+            <div id="dashboard-header">
+                <div id="title-container">
+                    <p id="main-title">dashboard</p>
+                    <p id="sub-content">hello <span>{{user.fullName}}</span>, welcome again!</p>
+                </div>
+                <button class="add-task-btn back-btn" type="button" onclick="window.history.back()">
+                    <i class="fa-solid fa-arrow-left-long"></i><p>back</p>
+                </button>
+            </div>
+            <div id="form-main-con">
+                <form id="new-task-form" action="" method="post">
+                    {% csrf_token %}
+                    <div class="form-attributes">
+                        <label for="form-title">title <sup>*</sup></label>
+                        {% if form.Title.value %}
+                            <input type="text" id="form-title id_Title" name="Title" required maxlength="50" value="{{form.Title.value}}" placeholder="enter your task title">
+                        {% else %}
+                            <input type="text" id="form-title id_Title" name="Title" required maxlength="50" placeholder="enter your task title">
+                        {% endif %}
+                    </div>
+                    <div class="form-attributes">
+                        <label for="form-date">date <sup>*</sup></label>
+                        {% if form.dueDate.value %}
+                            <input type="date" id="form-date" name="dueDate" required value="{{ form.dueDate.value|date:'Y-m-d' }}">
+                        {% else %}
+                            <input type="date" id="form-date" name="dueDate" required>
+                        {% endif %}
+                    </div>
+                    <div class="form-attributes">
+                        <label for="form-description">description</label>
+                        {% if form.Description.value %}
+                            <textarea id="form-description" name="Description">{{form.Description.value}}</textarea>
+                        {% else %}
+                            <textarea id="form-description" name="Description"></textarea>
+                        {% endif %}
+                    </div>
+                    <div id="priority-attr" class="form-attributes">
+                        <label for="selected_value">priority <sup>*</sup></label>
+                        <div id="priority-dots-con">
+                            {% if form.priority.value  == 1 %}
+                                <div id="dots">
+                                    <span class="dot selected" data-value="1"  style="background-color: red;"></span>
+                                    <span class="dot" data-value="2" style="background-color: orange;"></span>
+                                    <span class="dot" data-value="3" style="background-color: #CECECE;"></span>
+                                </div>
+                                <input type="hidden" name="priority" id="selected_value" required value="{{form.priority.value}}">
+                            {% elif form.priority.value  == 2 %}
+                                <div id="dots">
+                                    <span class="dot" data-value="1"  style="background-color: red;"></span>
+                                    <span class="dot selected" data-value="2" style="background-color: orange;"></span>
+                                    <span class="dot" data-value="3" style="background-color: #CECECE;"></span>
+                                </div>
+                                <input type="hidden" name="priority" id="selected_value" required value="{{form.priority.value}}">
+                            {% elif form.priority.value  == 3 %}
+                                <div id="dots">
+                                    <span class="dot" data-value="1"  style="background-color: red;"></span>
+                                    <span class="dot" data-value="2" style="background-color: orange;"></span>
+                                    <span class="dot selected" data-value="3" style="background-color: #CECECE;"></span>
+                                </div>
+                                <input type="hidden" name="priority" id="selected_value" required value="{{form.priority.value}}">
+                            {% else %}
+                                <div id="dots">
+                                    <span class="dot" data-value="1"  style="background-color: red;"></span>
+                                    <span class="dot" data-value="2" style="background-color: orange;"></span>
+                                    <span class="dot" data-value="3" style="background-color: #CECECE;"></span>
+                                </div>
+                                <input type="hidden" name="priority" id="selected_value" required>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <button class="sub-btn add-task-btn back-btn" type="submit">
+                        <p>submit</p>
+                    </button>
+                </form>
+            </div>
+        </section>
+        <section id="rightsidebar">
+            <div id="rs-noContent" >
+                
+                <p><i class="fa-solid fa-plus"></i><br>create new task</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+
+<script>
+    document.querySelectorAll('.dot').forEach(dot => {
+        dot.addEventListener('click', function() {
+            document.querySelectorAll('.dot').forEach(dot => {
+                dot.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            document.getElementById('selected_value').value = this.dataset.value;
+        });
+    });
+</script>

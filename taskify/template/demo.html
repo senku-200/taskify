@@ -1,0 +1,102 @@
+{{form}}
+
+
+{{user}}
+<h1>Incompleted</h1>
+{% for i in incompletedTask %}
+    <div class="task-item" task-id="{{i.id}}" style="cursor: pointer;">{{i.Title}}</div>
+    {% if i.completeStatus %}
+        <input type="checkbox" task-id="{{i.id}}" class="complete-checkbox" checked>
+    {% else %}
+        <input type="checkbox" task-id="{{i.id}}" class="complete-checkbox">
+    {% endif %}
+{% endfor %}    
+
+<h1>completed</h1>
+{% for i in completedTask %}
+    <div class="task-item" task-id="{{i.id}}" style="cursor: pointer;">{{i.Title}}</div>
+{% endfor %}    
+
+<div id="task-detail"></div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    var loadTaskDetails = (taskId)=>{
+        $.ajax({
+            url: '/task/' + taskId + '/',
+            method: 'GET',
+            success: function(data) {
+                $('#task-detail').html(
+                    '<h3>' + data.title + '</h3>' +
+                    '<p>' + data.description + '</p>' +
+                    '<p>Status: ' + (data.status ? 'Incomplete' : 'Complete') + '</p>'
+                );
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching task details:', error);
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded',()=>{
+        var taskItems = document.querySelectorAll('.task-item')
+        taskItems.forEach(function(Item){
+            Item.addEventListener('click',function(){
+                var itemId = this.getAttribute('task-id')
+                loadTaskDetails(itemId)
+            })  
+        })  
+
+        var taskCompleteStatus = document.querySelectorAll('.complete-checkbox')
+        taskCompleteStatus.forEach(function(checkbox){
+            checkbox.addEventListener('change',function(){
+                var taskId = this.getAttribute('task-id')
+                if(checkbox.checked){
+                    showConfirmation(taskId,checkbox)
+                }
+            })  
+        })
+        
+        var showConfirmation = (taskId,checkbox)=>{
+            const confirmed = confirm('Are you sure you want to mark this task as complete?');
+            if (confirmed) {
+                updateTaskStatus(taskId);
+            } else {
+                checkbox.checked = false;
+            }
+        }
+    })
+
+    var updateTaskStatus = (taskId) => {
+            $.ajax({
+                url: '/update/' + taskId + '/',
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                success: (data) => {
+                    location.reload()
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching task details:', error);
+                }
+            });
+        };
+
+        function getCookie(name) {
+            let cookieValue = null;
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+            return cookieValue;
+        }
+
+
+</script>
