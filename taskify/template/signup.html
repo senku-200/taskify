@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../static/styles/signup.css?{% now 'U' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div id="bg-img">
+        {% if login %}
+        <img src="../static/assests/signup-bg.jpg" alt="">
+        {% else %}
+        <img src="../static/assests/signin-bg.jpg" alt="">
+        {% endif %}
+    </div>
+    <main>
+        <section id="logo">
+            <span>:</span>
+            <p>taskify</p>
+        </section>
+        <section id="title">
+            {% if not login %}
+                <p>Create an account</p>
+            {% else %}
+                <p>Login to your account</p>
+            {% endif %}
+        </section>
+        <section id="form">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if login %}
+                    <div class="input-label-con">
+                        <label for="username">User Name<sup>*</sup></label>
+                        <input type="text" placeholder="Enter your username address" id="username" name="username">
+                    </div>
+                    <div class="input-label-con">
+                        <label for="">Password<sup>*</sup></label>
+                        <input type="password" placeholder="Create your password" name="password">
+                    </div>
+                    <div id="sub-btn">
+                        <button type="submit">login</button>
+                    </div>
+                {% else %}
+                <div class="input-label-con">
+                    <label for="fullName">Full Name<sup>*</sup></label>
+                    <input type="text" placeholder="Enter your fullname address" name="fullName" id="fullName">
+                </div>
+                <div class="input-label-con">
+                    <label for="username">User Name<sup>*</sup></label>
+                    <input type="text" placeholder="Enter your username address" id="username" name="username">
+                </div>
+                <div class="input-label-con">
+                    <label for="profession">profession<sup>*</sup></label>
+                    <input type="text" placeholder="Enter your profession address" id="profession" name="profession">
+                </div>
+                <div class="input-label-con">
+                    <label for="imageUpload">profile photo</label>
+                    <input type="file" id="imageUpload" name="profilePhoto" accept="image/*" >
+                </div>
+                <div class="input-label-con">
+                    <label for="">Password<sup>*</sup></label>
+                    <input type="password" placeholder="Create your password" name="password1">
+                </div>
+                <div id="sub-btn">
+                    <button type="submit">Create an account</button>
+                </div>
+                {% endif %}
+
+            </form>
+        </section>
+        <section id="login">
+            {% if not login %}
+                <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+            {% else %}
+                <p>Don’t have an account?<a href="{% url 'RegisterUser' %}"> Register</a></p>
+            {% endif %}
+        </section>
+        <section id="social-media">
+            <i class="fa-brands fa-facebook"></i>
+            <i class="fa-brands fa-twitter"></i>
+            <i class="fa-brands fa-instagram"></i>
+            <i class="fa-brands fa-linkedin"></i>
+        </section>
+    </main>
+</body>
+</html>

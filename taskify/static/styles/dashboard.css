@@ -108,9 +108,11 @@ main{
 }
 
 #ls-user-profile{
+    width: 100%;
     display: flex;
-    align-items: flex-start;
-    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
 }
 #profile-img{
     width: 50px;
@@ -118,6 +120,11 @@ main{
     flex-shrink: 0;
     object-fit: cover;
     clip-path: circle();
+}
+#user-profile{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 #user-name{
     color: #000;
@@ -441,7 +448,8 @@ html::-webkit-scrollbar{
     justify-content: space-between;
 }
 #rsb-task-title{
-    width: 200px;
+    width: 180px;
+    padding-right: 30px;
     color: #000;
     font-family: Poppins;
     font-size: 40px;
@@ -449,6 +457,8 @@ html::-webkit-scrollbar{
     font-weight: 800;
     line-height: normal;
     text-transform: capitalize;
+    word-wrap: break-word;
+    word-break:keep-all;
 }
 #rsb-task-date{
     color: #6C6C6C;
@@ -458,8 +468,7 @@ html::-webkit-scrollbar{
     font-weight: 600;
     line-height: normal;
     text-transform: capitalize;
-    word-wrap: break-word;
-    word-break:keep-all;
+
 }
 #right-sb-task-description{
     display: flex;
@@ -644,4 +653,12 @@ html::-webkit-scrollbar{
 
 sup{
     color: red;
+}
+
+
+#default-img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color:#8A8A8A;
 }

@@ -6,7 +6,7 @@ class User(AbstractUser):
     fullName = models.CharField(max_length = 100)
     username = models.CharField(max_length = 100,unique=True)
     profession = models.CharField(max_length = 200)
-    profilePhoto = models.ImageField(upload_to='./static/userProfilePhoto',blank=True,null=True)
+    profilePhoto = models.ImageField(upload_to='userProfilePhoto',blank=True,null=True)
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now_add=True)
     USERNAME_FIELD = 'username'

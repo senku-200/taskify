@@ -4,7 +4,55 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 # Create your views here.
 
-@login_required
+# In views.py
+from django.shortcuts import render, redirect
+from .forms import UserRegistrationForm
+
+def register_user(request):
+    form = forms.UserRegistrationForm()
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST, request.FILES)
+        print(form)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        print(form.errors)
+    return render(request, 'signup.html', {'form': form,'login':False})
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import login,logout 
+def user_login(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            try:
+                User.objects.get(username=username)
+            except:
+                print('user Doesnt exist')
+            user = authenticate(request,username = username,password=password)
+            if user is not None:
+                login(request,user)
+                return redirect('dashboard')
+            else:
+                print('password is wrong')
+    context = {'login':True}
+    return render(request,'signup.html',context=context)
+from django.shortcuts import redirect
+from django.contrib.auth import logout as auth_logout
+
+@login_required(login_url='login')
+def logout(request):
+    auth_logout(request)
+    return redirect('login')
+
+@login_required(login_url='login')
 def dashboard(request):
     user = request.user
     incompletedTask = Tasks.objects.filter(user=user,completeStatus=False).order_by('priority')

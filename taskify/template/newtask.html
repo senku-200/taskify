@@ -48,11 +48,15 @@
                 </a>
             </div>
             <div id="settings">
-                <button type="button" id="settings-btn">go to settings</button>
+                <a href="{% url 'logout' %}"><button type="button" id="settings-btn">Logout</button></a>
             </div>
             <div id="ls-user-profile">
                 <div class="user-profile-pic">
-                    <img src="../{{user.profilePhoto}}" alt="profile_img" id="profile-img">
+                    {% if user.profilePhoto %}
+                        <img src="{{user.profilePhoto.url}}" alt="profile_img" id="profile-img">
+                    {% else %}
+                        <div id="default-img"></div>
+                    {% endif %}
                 </div>
                 <div id="user-profile">
                     <p id="user-name">{{user.username}}</p>
